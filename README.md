@@ -1,24 +1,23 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+###　モデル名 Task
+| name | content | time_limit | rank | status | user_id |
+| ---- | ---- | ---- | ---- | ---- | ---- |  
+| string | text | datetim | integer | string | bigint |
+#### user_idは外部キー
 
-Things you may want to cover:
+###　モデル名 User
+| name | email | password | 
+| ---- | ---- | ---- | 
+| string | string | string | 
+   
+###　モデル名 Label  
+| name | 
+| ---- | 
+| string | 
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+###　モデル名 Task_label_connection
+| task_id | lavel_id | 
+| ---- | ---- |  
+| bigint | bigint | 
+#### task_idとlavel_idは外部キー
