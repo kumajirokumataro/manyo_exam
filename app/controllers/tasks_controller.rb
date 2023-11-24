@@ -19,7 +19,7 @@ class TasksController < ApplicationController
       #render :new
     #else 
       if @task.save
-        redirect_to new_task_path, notice: "投稿を作成しました！"
+        redirect_to task_path(@task.id), notice: "投稿を作成しました！"
       else
         render :new
       end
