@@ -21,3 +21,25 @@
 | ---- | ---- |  
 | bigint | bigint | 
 #### task_idとlavel_idは外部キー
+
+```
+heroku create
+```
+```
+git add .
+```
+```
+git commit -m "init"
+```
+```
+heroku buildpacks:set heroku/ruby
+```
+```
+heroku buildpacks:add --index 1 heroku/nodejs
+```
+```
+heroku addons:create heroku-postgresql
+```
+```
+git push heroku master
+```

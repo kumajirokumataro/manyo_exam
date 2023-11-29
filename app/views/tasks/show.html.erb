@@ -1,5 +1,6 @@
-<h1>詳細画面</h1>
-<p>タスク名: <%= @task.name %></p>
-<p>内容: <%= @task.content %></p>
+<h1><%= t('view.detail') %></th></h1>
+<p><%= t('view.task_name') %> : <%= @task.name %></p>
+<p><%= t('view.content') %> : <%= @task.content %></p>
 
-<%= link_to "一覧画面にもどる", tasks_path %>
+<%= link_to t('view.index'), tasks_path %>
+
