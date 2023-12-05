@@ -6,8 +6,9 @@ RSpec.describe 'タスク管理機能', type: :system do
         visit new_task_path
         fill_in 'task_name', with: 'パパ'
         fill_in 'task_content', with: '日曜日歯医者'
+        fill_in 'task_timelimit', with: '002023-12-17'
         click_on '登録する'
-        expect(page).to have_content '日曜日歯医者'
+        expect(page).to have_content '2023-12-17'
 
       end
     end
@@ -21,6 +22,18 @@ RSpec.describe 'タスク管理機能', type: :system do
         expect(task_list).to have_content '洗濯'        
       end
     end
+    context 'タスクが終了期限の降順に並び替えられた場合' do
+      it '新しいタスクが一番上に表示される' do
+        FactoryBot.create(:task, timelimit: '002024-01-10')
+        FactoryBot.create(:task )
+        FactoryBot.create(:task, timelimit: '002023-12-15')
+        visit tasks_path
+        click_on '終了期限でソートする'
+        sleep(1)
+        task_list = all('.task_list')[0]
+        expect(task_list).to have_content '2023-11-01'  
+      end
+    end  
   end
 
   describe '一覧表示機能' do
