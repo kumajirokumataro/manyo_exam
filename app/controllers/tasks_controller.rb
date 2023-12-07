@@ -3,25 +3,29 @@ class TasksController < ApplicationController
   def index
     
     if params[:task].present?
-      if params[:task][:name] && params[:task][:status]
-        binding.pry
-        @tasks = Task.where('name LIKE ?', "%#{params[:task][:name]}%").where(status: params[:task][:status])
+      if params[:task][:name] && params[:task][:status].present?
+        @tasks = Task.search(params[:task][:name], params[:task][:status])
+        #sucopeを使用しなかった時の書き方@tasks = Task.where('name LIKE ?', "%#{params[:task][:name]}%").where(status: params[:task][:status])
         #モデル名.where(A).or(モデル名.where(B))
-        #@tasks = Task.where('name LIKE ?', "%#{params[:task][:name]}%",status: params[:status])
       elsif params[:task][:name]
-        @tasks = Task.where('name LIKE ?', "%#{params[:task][:name]}%")
-       
+        @tasks = Task.name_search(params[:task][:name])
       elsif params[:task][:status]
-        @tasks = Task.where(status: params[:status])
+        @tasks = Task.status_search(params[:task][:status])
       end
     end
+
     if params[:sort_expired]
       @tasks = Task.all.order(timelimit: "ASC")
+    elsif params[:sort_rank]
+      @tasks = Task.all.order(rank: "ASC")
     elsif params[:task]
-      @tasks = @tasks
+      #@tasks = @tasksということ
     elsif 
       @tasks = Task.all.order(created_at: "DESC")
     end
+
+    @tasks = @tasks.page(params[:page]).per(15)
+
   end
 
   
@@ -72,7 +76,7 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:name, :content, :timelimit, :status)
+    params.require(:task).permit(:name, :content, :timelimit, :status, :rank)
   end
 
 

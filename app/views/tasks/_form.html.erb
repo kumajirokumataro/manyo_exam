@@ -18,7 +18,8 @@
     <%= form.date_field :timelimit %>
     <%= form.label :status %>
     <%= form.select :status, [["未着手", "未着手"], ["着手中", "着手中"], ["完了", "完了"]], include_blank: "選択して下さい" %>
-    
+    <%= form.label :rank %>
+    <%= form.select :rank, [["高", "高"], ["中", "中"], ["低", "低"]], include_blank: "選択して下さい" %>
   </div>
   <%= form.submit %>
 <% end %>
