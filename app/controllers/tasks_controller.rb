@@ -1,8 +1,34 @@
 class TasksController < ApplicationController
 
   def index
-    @tasks = Task.all.order(created_at: "DESC")
+    
+    if params[:task].present?
+      if params[:task][:name] && params[:task][:status].present?
+        @tasks = Task.search(params[:task][:name], params[:task][:status])
+        #sucopeを使用しなかった時の書き方@tasks = Task.where('name LIKE ?', "%#{params[:task][:name]}%").where(status: params[:task][:status])
+        #モデル名.where(A).or(モデル名.where(B))
+      elsif params[:task][:name]
+        @tasks = Task.name_search(params[:task][:name])
+      elsif params[:task][:status]
+        @tasks = Task.status_search(params[:task][:status])
+      end
+    end
+
+    if params[:sort_expired]
+      @tasks = Task.all.order(timelimit: "ASC")
+    elsif params[:sort_rank]
+      @tasks = Task.all.order(rank: "ASC")
+    elsif params[:task]
+      #@tasks = @tasksということ
+    elsif 
+      @tasks = Task.all.order(created_at: "DESC")
+    end
+
+    @tasks = @tasks.page(params[:page]).per(15)
+
   end
+
+  
 
   def show
     @task = Task.find(params[:id])
@@ -14,11 +40,13 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
+   
     #@task.user_id = current_user.id 
     #if params[:back]
       #render :new
     #else 
       if @task.save
+      
         redirect_to task_path(@task.id), notice: "投稿を作成しました！"
       else
         render :new
@@ -45,11 +73,10 @@ class TasksController < ApplicationController
     redirect_to tasks_path, notice:"削除しました！"
   end
 
-
   private
 
   def task_params
-    params.require(:task).permit(:name, :content)
+    params.require(:task).permit(:name, :content, :timelimit, :status, :rank)
   end
 
 

@@ -6,8 +6,10 @@ RSpec.describe 'タスク管理機能', type: :system do
         visit new_task_path
         fill_in 'task_name', with: 'パパ'
         fill_in 'task_content', with: '日曜日歯医者'
+        fill_in 'task_timelimit', with: '002023-12-17'
+        find("#task_status").find("option[value='完了']").select_option
         click_on '登録する'
-        expect(page).to have_content '日曜日歯医者'
+        expect(page).to have_content '完了'
 
       end
     end
@@ -21,6 +23,30 @@ RSpec.describe 'タスク管理機能', type: :system do
         expect(task_list).to have_content '洗濯'        
       end
     end
+    context 'タスクが終了期限の降順に並び替えられた場合' do
+      it '新しいタスクが一番上に表示される' do
+        FactoryBot.create(:task, timelimit: '002024-01-10')
+        FactoryBot.create(:task )
+        FactoryBot.create(:task, timelimit: '002023-12-15')
+        visit tasks_path
+        click_on '終了期限でソートする'
+        sleep(1)
+        task_list = all('.task_list')[0]
+        expect(task_list).to have_content '2023-11-01'  
+      end
+    end  
+    context 'タスクが優先順位の高い順に並び替えられた場合' do
+      it '優先順位「高」のタスクが一番上に表示される' do
+        FactoryBot.create(:task, rank: '低')
+        FactoryBot.create(:task )
+        FactoryBot.create(:task, rank: '高')
+        visit tasks_path
+        click_on '優先順位でソートする'
+        sleep(1)
+        task_list = all('.task_list')[0]
+        expect(task_list).to have_content '高'  
+      end
+    end  
   end
 
   describe '一覧表示機能' do
@@ -40,5 +66,42 @@ RSpec.describe 'タスク管理機能', type: :system do
         expect(page).to have_content '家事'
        end
      end
+  end
+  describe '検索機能' do
+    before do
+      FactoryBot.create(:task, name: "おじいちゃん")
+      FactoryBot.create(:task, content: "掃除機" ,status: "未着手")
+      FactoryBot.create(:task, content: "お歳暮準備" ,status: "完了")
+    end
+
+    context 'タイトルであいまい検索をした場合' do
+      it "検索キーワードを含むタスクで絞り込まれる" do
+        visit tasks_path
+        # タスクの検索欄に検索ワードを入力する (例: task)
+        fill_in 'task_name', with: 'おじいちゃん'
+        # 検索ボタンを押す
+        click_on '検索'
+        expect(page).to have_content 'おじいちゃん'
+        expect(page).not_to have_content 'パパ'
+      end
+    end
+    context 'ステータス検索をした場合' do
+      it "ステータスに完全一致するタスクが絞り込まれる" do
+        visit tasks_path
+        find("#task_status").find("option[value='未着手']").select_option
+        click_on '検索'
+        expect(page).to have_content '未着手'
+        expect(page).not_to have_content 'お歳暮準備'
+      end
+    end
+    context 'タイトルのあいまい検索とステータス検索をした場合' do
+      it "検索キーワードをタイトルに含み、かつステータスに完全一致するタスク絞り込まれる" do
+        visit tasks_path
+        fill_in 'task_name', with: 'パパ'
+        find("#task_status").find("option[value='未着手']").select_option
+        expect(page).to have_content '未着手'
+        expect(page).to have_content 'パパ'
+      end
+    end
   end
 end

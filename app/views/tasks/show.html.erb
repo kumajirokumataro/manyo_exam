@@ -1,6 +1,8 @@
 <h1><%= t('view.detail') %></th></h1>
 <p><%= t('view.task_name') %> : <%= @task.name %></p>
 <p><%= t('view.content') %> : <%= @task.content %></p>
+<p><%= t('view.timelimit') %> : <%= @task.timelimit %></p>
+<p><%= t('view.status') %> : <%= @task.status %></p>
 
 <%= link_to t('view.index'), tasks_path %>
 

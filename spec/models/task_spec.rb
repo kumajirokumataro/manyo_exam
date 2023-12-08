@@ -21,6 +21,33 @@ RSpec.describe 'タスクモデル機能', type: :model do
       end
     end
   end
+  describe '検索機能' do
+    # 必要に応じて、テストデータの内容を変更して構わない
+    let!(:task) { FactoryBot.create(:task ) }
+    let!(:second_task) { FactoryBot.create(:second_task ) }
+    context 'scopeメソッドでタイトルのあいまい検索をした場合' do
+      it "検索キーワードを含むタスクが絞り込まれる" do
+        # title_seachはscopeで提示したタイトル検索用メソッドである。メソッド名は任意で構わない。
+        expect(Task.name_search('パパ')).to include(task)
+        expect(Task.name_search('パパ')).not_to include(second_task)
+        expect(Task.name_search('パパ').count).to eq 1
+      end
+    end
+    context 'scopeメソッドでステータス検索をした場合' do
+      it "ステータスに完全一致するタスクが絞り込まれる" do
+        expect(Task.status_search('未着手')).to include(task)
+        expect(Task.status_search('未着手')).not_to include(second_task)
+        expect(Task.status_search('未着手').count).to eq 1
+        end
+    end
+    context 'scopeメソッドでタイトルのあいまい検索とステータス検索をした場合' do
+      it "検索キーワードをタイトルに含み、かつステータスに完全一致するタスク絞り込まれる" do
+        expect(Task.search('パパ','未着手')).to include(task)
+        expect(Task.search('パパ','未着手')).not_to include(second_task)
+        expect(Task.search('パパ','未着手').count).to eq 1
+      end
+    end
+  end
 end
 
 #RSpec.describe Task, type: :model do
