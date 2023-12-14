@@ -1,0 +1,31 @@
+<h1><%= @user.name %>のページ</h1>
+
+<p>メールアドレス: <%= @user.email %></p>
+
+
+
+<div>
+  <table>
+    <tr>
+      <th><%= t('view.task_name') %></th>
+      <th><%= t('view.content') %></th>
+      <th><%= t('view.timelimit') %></th>
+      <th><%= t('view.status') %></th>
+      <th><%= t('view.rank') %></th>
+      <th>投稿者</th>
+
+    </tr>
+
+  <% @tasks.each do |task| %>
+    <tr class="task_list">
+      <td><%= task.name %></td>
+      <td><%= task.content %></td>
+      <td><%= task.timelimit %></td>
+      <td><%= task.status %></td>
+      <td><%= task.rank %></td>
+      <td><%= task.user.name %></td>
+    </tr>
+  <% end %>
+  </table>
+</div>
+<%= link_to t('view.index'),tasks_path %>
