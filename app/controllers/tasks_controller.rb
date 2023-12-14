@@ -1,27 +1,27 @@
 class TasksController < ApplicationController
 
   def index
-    
+
     if params[:task].present?
       if params[:task][:name] && params[:task][:status].present?
-        @tasks = Task.search(params[:task][:name], params[:task][:status])
+        @tasks = current_user.tasks.search(params[:task][:name], params[:task][:status])
         #sucopeを使用しなかった時の書き方@tasks = Task.where('name LIKE ?', "%#{params[:task][:name]}%").where(status: params[:task][:status])
         #モデル名.where(A).or(モデル名.where(B))
       elsif params[:task][:name]
-        @tasks = Task.name_search(params[:task][:name])
+        @tasks = current_user.tasks.name_search(params[:task][:name])
       elsif params[:task][:status]
-        @tasks = Task.status_search(params[:task][:status])
+        @tasks = current_user.tasks.status_search(params[:task][:status])
       end
     end
 
     if params[:sort_expired]
-      @tasks = Task.all.order(timelimit: "ASC")
+      @tasks = current_user.tasks.all.order(timelimit: "ASC")
     elsif params[:sort_rank]
-      @tasks = Task.all.order(rank: "ASC")
+      @tasks = current_user.tasks.all.order(rank: "ASC")
     elsif params[:task]
-      #@tasks = @tasksということ
+      #@tasks = @tasksということ（検索機能で絞られたタスクがそのまま、ということ）
     elsif 
-      @tasks = Task.all.order(created_at: "DESC")
+      @tasks = current_user.tasks.all.order(created_at: "DESC")
     end
 
     @tasks = @tasks.page(params[:page]).per(15)
@@ -39,14 +39,12 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(task_params)
-   
+    @task = current_user.tasks.build(task_params)
+    #この上の1行は、この2行のこと
+    #@task = Task.new(task_params)
     #@task.user_id = current_user.id 
-    #if params[:back]
-      #render :new
-    #else 
+
       if @task.save
-      
         redirect_to task_path(@task.id), notice: "投稿を作成しました！"
       else
         render :new

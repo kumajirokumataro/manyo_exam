@@ -12,6 +12,7 @@
 
 
 <div>
+  
   <table>
     <tr>
       <th><%= t('view.task_name') %></th>
@@ -19,6 +20,8 @@
       <th><%= t('view.timelimit') %></th>
       <th><%= t('view.status') %></th>
       <th><%= t('view.rank') %></th>
+      <th>投稿者</th>
+
     </tr>
 
   <% @tasks.each do |task| %>
@@ -28,6 +31,7 @@
       <td><%= task.timelimit %></td>
       <td><%= task.status %></td>
       <td><%= task.rank %></td>
+      <td><%= task.user.name %></td>
 
       <td><%= link_to t('view.detail'), task_path(task.id), class: "btn btn-primary" %></td>
       <td><%= link_to t('view.edit'), edit_task_path(task.id), class: "btn btn-success " %></td>

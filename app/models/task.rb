@@ -9,6 +9,9 @@ class Task < ApplicationRecord
   scope :status_search,  -> (status) { where(status: status) }
 
   enum rank: { "高": 0, "中": 1, "低": 2 }
+
+  belongs_to :user
+
   private
 
   #def set_default_timelimit

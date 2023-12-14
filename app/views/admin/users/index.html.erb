@@ -1,0 +1,21 @@
+<p>ユーザー一覧</p>
+<table>
+<tr>
+  <th>ユーザー名</th>
+  <th>メールアドレス</th>
+  <th>タスク数</th>
+  <th>管理者権限</th>
+</tr>
+<% @users.each do |user| %>
+  <tr class="user_list">
+    <td><%= user.name %></td>
+    <td><%= user.email %></td>
+    <td><%= user.tasks.size %></td>
+    <td><%= user.admin %></td>
+
+    <td><%= link_to t('view.edit'), edit_admin_user_path(user.id), class: "btn btn-success " %></td>
+    <td><%= link_to t('view.destroy'), admin_user_path(user.id), class: "btn btn-warning", method: :delete ,data: { confirm: '本当に削除していいですか？' } %></td>
+    <br> 
+  </tr>
+<% end %>
+</table>

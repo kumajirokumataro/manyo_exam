@@ -23,8 +23,10 @@ RSpec.describe 'タスクモデル機能', type: :model do
   end
   describe '検索機能' do
     # 必要に応じて、テストデータの内容を変更して構わない
-    let!(:task) { FactoryBot.create(:task ) }
-    let!(:second_task) { FactoryBot.create(:second_task ) }
+    let!(:user) { FactoryBot.create(:user) }
+    let!(:task) { FactoryBot.create(:task, user: user) }
+    let!(:user) { FactoryBot.create(:user) }
+    let!(:second_task) { FactoryBot.create(:second_task, user: user ) }
     context 'scopeメソッドでタイトルのあいまい検索をした場合' do
       it "検索キーワードを含むタスクが絞り込まれる" do
         # title_seachはscopeで提示したタイトル検索用メソッドである。メソッド名は任意で構わない。
