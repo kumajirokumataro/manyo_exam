@@ -11,8 +11,7 @@ class User < ApplicationRecord
 
   def not_admin_destroy
     throw (:abort) if self.admin == true && User.where(admin: true).count == 1
-    #User.where(admin: true).count == 1 でもOK!!
-    #User.all.count{ |item| item.admin == true} == 1 
+    #User.all.count{ |item| item.admin == true} == 1でもOK!
   end
 
   def not_admin_update
