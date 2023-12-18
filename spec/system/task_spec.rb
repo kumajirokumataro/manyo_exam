@@ -119,7 +119,7 @@ RSpec.describe 'タスク管理機能', type: :system do
         # タスクの検索欄に検索ワードを入力する (例: task)
         fill_in 'task_name', with: 'おじいちゃん'
         # 検索ボタンを押す
-        click_on '検索'
+        all('.btn')[0].click
         sleep(1)
         expect(page).to have_content 'おじいちゃん'
         expect(page).not_to have_content 'パパ'
@@ -129,7 +129,7 @@ RSpec.describe 'タスク管理機能', type: :system do
       it "ステータスに完全一致するタスクが絞り込まれる" do
         visit tasks_path
         find("#task_status").find("option[value='未着手']").select_option
-        click_on '検索'
+        all('.btn')[0].click
         sleep(1)
         expect(page).to have_content '未着手'
         expect(page).not_to have_content 'お歳暮準備'

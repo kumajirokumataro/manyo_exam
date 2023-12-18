@@ -10,6 +10,8 @@ class Task < ApplicationRecord
 
   enum rank: { "高": 0, "中": 1, "低": 2 }
 
+  has_many :connections, dependent: :destroy
+  has_many :labels, through: :connections, source: :label
   belongs_to :user
 
   private

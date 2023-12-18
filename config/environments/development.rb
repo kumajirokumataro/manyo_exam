@@ -13,6 +13,7 @@ Rails.application.configure do
 
   # Show full error reports.
   config.consider_all_requests_local = true
+  #提出直前にここをfalseに変えて、エラー画面の表示方法を変える
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.

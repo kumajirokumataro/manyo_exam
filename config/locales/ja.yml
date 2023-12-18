@@ -11,6 +11,8 @@ ja:
     timelimit: 終了期限
     status: ステータス
     rank: 優先度
+    admin: 管理者権限
+    label: ラベル
   activerecord:
     errors:
       messages:

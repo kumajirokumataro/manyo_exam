@@ -4,7 +4,7 @@ class User < ApplicationRecord
   before_destroy :not_admin_destroy
   before_update :not_admin_update
   has_many :tasks, dependent: :destroy
-
+  
   has_secure_password
 
   private

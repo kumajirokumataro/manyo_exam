@@ -3,6 +3,8 @@
 <p><%= t('view.content') %> : <%= @task.content %></p>
 <p><%= t('view.timelimit') %> : <%= @task.timelimit %></p>
 <p><%= t('view.status') %> : <%= @task.status %></p>
-
+<% @task.labels.each do |label| %>
+<p><%= t('view.label') %> : <%= label.name %></p>
+<% end %>
 <%= link_to t('view.index'), tasks_path %>
 

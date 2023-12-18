@@ -4,11 +4,14 @@
   <%= f.text_field :name, placeholder: "検索したい内容を記入してください。" %>
   <%#= f.text_field :status, placeholder: "検索したいステータスを選んで下さい。" %>
   <%= f.select :status, [["未着手", "未着手"], ["着手中", "着手中"], ["完了", "完了"]], include_blank: "選択して下さい" %>
-  
-    
   <%= f.submit "検索", class: "btn" %>
   <% end %>
 </div>
+<div class="label_searchbox">
+<%= form_for @task, method: :get do |f| %>
+  <%= f.select :id, Label.all.collect { |label| [ label.name, label.id ] }, include_blank: true %>
+  <%= f.submit "検索", class: "btn" %>
+<% end %>
 
 
 <div>
